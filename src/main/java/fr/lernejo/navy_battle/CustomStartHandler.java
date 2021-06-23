@@ -33,7 +33,7 @@ public class CustomStartHandler implements HttpHandler {
             else {
                 StringBuilder test = new StringBuilder();
                 String msg = "May the best code win";
-                test.append("{\n\t\"id\":\"000\",\n\t\"url\":\"").append(this.url).append("\",\n\t\"message\":\"").append(msg).append("\"\n}");
+                test.append("{\n\t\"id\":\"0\",\n\t\"url\":\"").append(this.url).append("\",\n\t\"message\":\"").append(msg).append("\"\n}");
 
                 exchange.sendResponseHeaders(202, test.toString().length());
                 try (OutputStream os = exchange.getResponseBody()) { // (1)
