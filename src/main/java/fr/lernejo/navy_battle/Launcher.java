@@ -1,13 +1,13 @@
 package fr.lernejo.navy_battle;
 
-import com.sun.net.httpserver.HttpServer;
-
-import java.net.InetSocketAddress;
-import java.util.concurrent.Executors;
+import java.io.IOException;
+import java.util.Arrays;
 
 public class Launcher {
-    public static void main(String[] args) {
-            int port = Integer.parseInt(args[0]);
-            new StartServer().Start(port);
+    public static void main(String[] args) throws IOException {
+        int port = Integer.parseInt(args[0]);
+        /*if (args.length > 1)
+            System.out.println("test recup arg : " + args[1]);*/
+        new StartServer().Start(port);
     }
 }
