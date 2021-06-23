@@ -5,11 +5,11 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class CustomHandler implements HttpHandler {
+public class CustomPingHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        String body = "Hello";
+        String body = "OK";
         exchange.sendResponseHeaders(200, body.length());
         try (OutputStream os = exchange.getResponseBody()) { // (1)
             os.write(body.getBytes());
