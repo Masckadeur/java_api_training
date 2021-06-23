@@ -16,7 +16,7 @@ class CustomStartHandlerTest {
 
     @Test
     void StartHandlerGetMethosTest() throws IOException, InterruptedException {
-        new StartServer().Start(9876);
+        var server = new StartServer(9876);
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -27,10 +27,12 @@ class CustomStartHandlerTest {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         Assertions.assertEquals(404, response.statusCode());
+        server.Stop();
     }
 
     @Test
     void StartHandlerDELETEMethosTest() throws IOException, InterruptedException {
+        var server = new StartServer(9876);
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -41,5 +43,6 @@ class CustomStartHandlerTest {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         Assertions.assertEquals(404, response.statusCode());
+        server.Stop();
     }
 }

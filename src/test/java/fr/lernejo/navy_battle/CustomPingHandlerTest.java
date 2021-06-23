@@ -16,7 +16,7 @@ class CustomPingHandlerTest {
 
     @Test
     void PingCorect() throws IOException, InterruptedException {
-        new StartServer().Start(9876);
+        var server = new StartServer(9876);
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -28,5 +28,7 @@ class CustomPingHandlerTest {
 
         Assertions.assertEquals(200, response.statusCode());
         Assertions.assertEquals("OK", response.body());
+
+        server.Stop();
         }
 }

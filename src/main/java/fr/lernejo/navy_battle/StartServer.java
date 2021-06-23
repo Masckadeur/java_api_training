@@ -7,14 +7,20 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
 public class StartServer {
-    public final void Start(int port) throws IOException {
-            InetSocketAddress soc = new InetSocketAddress(port);
-            HttpServer server = HttpServer.create(soc, 0);
+    HttpServer server;
 
-            server.setExecutor(Executors.newSingleThreadExecutor());
+    StartServer(int port) throws IOException {
+        InetSocketAddress soc = new InetSocketAddress(port);
+        this.server = HttpServer.create(soc, 0);
 
-            server.createContext("/ping", new CustomPingHandler());
-            server.createContext("/api/game/start", new CustomStartHandler(port));
-            server.start();
+        this.server.setExecutor(Executors.newSingleThreadExecutor());
+
+        this.server.createContext("/ping", new CustomPingHandler());
+        this.server.createContext("/api/game/start", new CustomStartHandler(port));
+        this.server.start();
+    }
+
+    public final void Stop() {
+        this.server.stop(0);
     }
 }
