@@ -17,7 +17,7 @@ public class StartServer {
 
         this.server.createContext("/ping", new CustomPingHandler());
         this.server.createContext("/api/game/start", new CustomStartHandler(port));
-        //this.server.createContext("/api/game/fire" , new CustomFireHandler());
+        this.server.createContext("/api/game/fire" , new CustomFireHandler());
         this.server.start();
     }
 
