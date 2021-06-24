@@ -236,4 +236,34 @@ class CustomFireHandlerTest {
 
         server.Stop();
     }
+
+    @Test
+    void WrongParamDeleteNumber() throws IOException, InterruptedException {
+        var server = new StartServer(9876);
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=K")).GET().build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        Assertions.assertEquals(404, response.statusCode());
+        Assertions.assertEquals("Wrong Param", response.body());
+
+        server.Stop();
+    }
+
+    @Test
+    void WrongParamWrongNumber() throws IOException, InterruptedException {
+        var server = new StartServer(9876);
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=K8")).GET().build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        Assertions.assertEquals(404, response.statusCode());
+        Assertions.assertEquals("Wrong Param", response.body());
+
+        server.Stop();
+    }
 }

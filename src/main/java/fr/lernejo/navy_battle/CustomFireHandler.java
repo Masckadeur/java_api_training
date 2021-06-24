@@ -10,33 +10,30 @@ import java.net.http.HttpClient;
 public class CustomFireHandler implements HttpHandler {
     final Cell map;
 
-    CustomFireHandler() {
-        this.map = new Cell();
-    }
+    CustomFireHandler() { this.map = new Cell(); }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        if (!exchange.getRequestMethod().equals("GET")) {
+        if (!exchange.getRequestMethod().equals("GET"))
             NotFoundMethod(exchange);
-        }
 
         var JsonProp = Parser(exchange);
-        int statusBoat = CheckBoat(JsonProp);
-        if (statusBoat == 0) { //miss case
-            SendResponse(exchange, "{\n\t\"consequence\": \"miss\",\n\t\"shipLeft\": true\n}", 200);
-        }
-        else if (statusBoat == 2) { //Hit case
-            SendResponse(exchange, "{\n\t\"consequence\": \"hit\",\n\t\"shipLeft\": true\n}", 200);
-        }
-        else {//sunk case
-            ShipLeaft(/*map, */exchange);
-        }
-        //envoie ça cible à l'autre
+        if (JsonProp != null) {
+            int statusBoat = CheckBoat(JsonProp);
+            if (statusBoat == 0) { //miss case
+                SendResponse(exchange, "{\n\t\"consequence\": \"miss\",\n\t\"shipLeft\": true\n}", 200);
+            } else if (statusBoat == 2) { //Hit case
+                SendResponse(exchange, "{\n\t\"consequence\": \"hit\",\n\t\"shipLeft\": true\n}", 200);
+            } else {//sunk case
+                ShipLeaft(exchange);
+            }
+            //envoie ça cible à l'autre
 
-        //HttpClient client = HttpClient.newHttpClient();
+            //HttpClient client = HttpClient.newHttpClient();
 
-        //String param = exchange.getRequestURI().toString().substring(exchange.getRequestURI().toString().indexOf("?") + 1);
-        //exchange.sendResponseHeaders(202, "OK".length());
+            //String param = exchange.getRequestURI().toString().substring(exchange.getRequestURI().toString().indexOf("?") + 1);
+            //exchange.sendResponseHeaders(202, "OK".length());
+        }
 
     }
 
@@ -75,9 +72,15 @@ public class CustomFireHandler implements HttpHandler {
         }
     }
 
-    private JsonFireHandlerProp Parser(HttpExchange exchange) {
+    private JsonFireHandlerProp Parser(HttpExchange exchange) throws IOException {
         String param = exchange.getRequestURI().toString().substring(exchange.getRequestURI().toString().indexOf("?") + 1);
-        return new JsonFireHandlerProp(param.substring(param.indexOf("=") + 1));
+        //param.substring(param.indexOf("=") + 1).charAt(1);
+        if (param.substring(param.indexOf("=") + 1).length() != 2 || param.substring(param.indexOf("=") + 1).charAt(0) > 'J' || param.substring(param.indexOf("=") + 1).charAt(1) - '0' > 10) {
+            SendResponse(exchange, "Wrong Param", 404);
+            return null;
+        }
+        else
+            return new JsonFireHandlerProp(param.substring(param.indexOf("=") + 1));
     }
 
     private void NotFoundMethod(HttpExchange exchange) throws IOException {
