@@ -7,7 +7,7 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
 public class StartServer {
-    HttpServer server;
+    final HttpServer server;
 
     StartServer(int port) throws IOException {
         InetSocketAddress soc = new InetSocketAddress(port);
@@ -17,6 +17,7 @@ public class StartServer {
 
         this.server.createContext("/ping", new CustomPingHandler());
         this.server.createContext("/api/game/start", new CustomStartHandler(port));
+        this.server.createContext("/api/game/fire" , new CustomFireHandler());
         this.server.start();
     }
 

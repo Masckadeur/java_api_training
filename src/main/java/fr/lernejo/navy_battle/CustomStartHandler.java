@@ -1,6 +1,5 @@
 package fr.lernejo.navy_battle;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -22,24 +21,21 @@ public class CustomStartHandler implements HttpHandler {
             NotFoundMethod(exchange);
         }
         else {
-            APOD requestJson = ParseBody(exchange);
+            JsonStartHandlerProp requestJson = ParseBody(exchange);
 
             if (requestJson.message.equals("\"\"") || requestJson.id.equals("\"\"") || requestJson.url.equals("\"\"")) {
-                exchange.sendResponseHeaders(400, "Bad Json".length());
-                try (OutputStream os = exchange.getResponseBody()) { // (1)
-                    os.write("Bad Json".getBytes());
-                }
+                SendResponse(exchange, "Bad Json", 400);
             }
             else {
-                StringBuilder test = new StringBuilder();
-                String msg = "May the best code win";
-                test.append("{\n\t\"id\":\"0\",\n\t\"url\":\"").append(this.url).append("\",\n\t\"message\":\"").append(msg).append("\"\n}");
-
-                exchange.sendResponseHeaders(202, test.toString().length());
-                try (OutputStream os = exchange.getResponseBody()) { // (1)
-                    os.write(test.toString().getBytes());
-                }
+                SendResponse(exchange, "{\n\t\"id\":\"0\",\n\t\"url\":\"" + this.url + "\",\n\t\"message\":\"May the best code win\"\n", 202);
             }
+        }
+    }
+
+    private void SendResponse(HttpExchange exchange, String s, int rcode) throws IOException {
+        exchange.sendResponseHeaders(rcode, s.length());
+        try (OutputStream os = exchange.getResponseBody()) { // (1)
+            os.write(s.getBytes());
         }
     }
 
@@ -60,15 +56,15 @@ public class CustomStartHandler implements HttpHandler {
         return sb.toString();
     }
 
-    private APOD ParseBody(HttpExchange exchange) throws IOException {
+    private JsonStartHandlerProp ParseBody(HttpExchange exchange) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        APOD requestJson = null;
+        JsonStartHandlerProp requestJson;
         String Body = "Bad request";
 
         String sb = ConvertInputStreamtoString(exchange.getRequestBody());
 
         try {
-            requestJson = mapper.readValue(sb, APOD.class);
+            requestJson = mapper.readValue(sb, JsonStartHandlerProp.class);
         } catch (IllegalArgumentException e) {
             exchange.sendResponseHeaders(400, Body.length());
             throw new IllegalArgumentException();
