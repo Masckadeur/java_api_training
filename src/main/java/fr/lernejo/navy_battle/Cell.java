@@ -15,21 +15,13 @@ public class Cell {
     Cell() {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                if (j == 0 && i <= 4)
-                    this.Sea[i][j] = 1;
-                else if (j == 3 && i >= 6)
-                    this.Sea[i][j] = 2;
-                else if (j == 6 && i <= 2)
-                    this.Sea[i][j] = 3;
-                else if (i == 5 && (j >= 5 && j <= 7))
-                    this.Sea[i][j] = 3;
-                else if (i == 2 && (j == 8 || j == 9))
-                    this.Sea[i][j] = 4;
-                else
-                    this.Sea[i][j] = 0;
-                //System.out.print(Sea[i][j]);
+                if (j == 0 && i <= 4) { this.Sea[i][j] = 1; }
+                else if (j == 3 && i >= 6) { this.Sea[i][j] = 2; }
+                else if (j == 6 && i <= 2) { this.Sea[i][j] = 3;}
+                else if (i == 5 && (j >= 5 && j <= 7)) { this.Sea[i][j] = 3;}
+                else if (i == 2 && (j == 8 || j == 9)) { this.Sea[i][j] = 4; }
+                else { this.Sea[i][j] = 0; }
             }
-            //System.out.println("");
         }
     }
 }

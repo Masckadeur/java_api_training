@@ -20,14 +20,10 @@ public class CustomStartHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-
-        if (!exchange.getRequestMethod().equals("POST")) {
-            NotFoundMethod(exchange);
-        }
+        if (!exchange.getRequestMethod().equals("POST")) { NotFoundMethod(exchange); }
         else {
             JsonStartHandlerProp requestJson = ParseBody(exchange);
-
-            if (requestJson.message.equals("\"\"") || requestJson.id.equals("\"\"") || requestJson.url.equals("\"\"")) { SendResponse(exchange, "Bad Json", 400); }
+            if (requestJson == null || requestJson.message.equals("\"\"") || requestJson.id.equals("\"\"") || requestJson.url.equals("\"\"")) { SendResponse(exchange, "Bad Json", 400); }
             else { SendResponse(exchange, "{\n\t\"id\":\"0\",\n\t\"url\":\"" + this.url + "\",\n\t\"message\":\"May the best code win\"\n", 202); }
 
             HttpClient client = HttpClient.newHttpClient();
@@ -65,16 +61,19 @@ public class CustomStartHandler implements HttpHandler {
 
     private JsonStartHandlerProp ParseBody(HttpExchange exchange) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        JsonStartHandlerProp requestJson;
+        JsonStartHandlerProp requestJson = null;
         String Body = "Bad request";
 
         String sb = ConvertInputStreamtoString(exchange.getRequestBody());
-
-        try {
-            requestJson = mapper.readValue(sb, JsonStartHandlerProp.class);
-        } catch (IllegalArgumentException e) {
-            exchange.sendResponseHeaders(400, Body.length());
-            throw new IllegalArgumentException();
+        if (sb.isBlank())
+            return null;
+        else {
+            try {
+                requestJson = mapper.readValue(sb, JsonStartHandlerProp.class);
+            } catch (IllegalArgumentException e) {
+                exchange.sendResponseHeaders(400, Body.length());
+                throw new IllegalArgumentException();
+            }
         }
 
         return requestJson;

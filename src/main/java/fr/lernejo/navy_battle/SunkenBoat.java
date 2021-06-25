@@ -48,26 +48,16 @@ public class SunkenBoat {
     }
 
     private int SunkenBoatDestroyersCheck(Cell map) {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (map.Sea[i][j] == 3) {
-                    if (j > 0 && j < 9 && (map.Sea[i][j - 1] != 3 || map.Sea[i][j + 1] != 3)) {
-                        if (i > 0 && i < 9 && (map.Sea[i - 1][j] != 3 || map.Sea[i + 1][j] != 3)) {
-                            return 0;
-                        }
-                        else if ((i == 0 && map.Sea[i + 1][j] != 3) || (i == 9 && map.Sea[i - 1][j] != 3))
-                            return 0;
-                    }
-                    else if ((j == 0 && map.Sea[i][j + 1] != 3) || (j == 9 && map.Sea[i][j - 1] != 3)) {
-                        if (i > 0 && i < 9 && (map.Sea[i - 1][j] != 3 || map.Sea[i + 1][j] != 3)) {
-                            return 0;
-                        }
-                        else if ((i == 0 && map.Sea[i + 1][j] != 3) || (i == 9 && map.Sea[i - 1][j] != 3))
-                            return 0;
-                    }
-                }
+        for (int i = 0; i < 10; i++) { for (int j = 0; j < 10; j++) {
+            if (map.Sea[i][j] == 3 && (j > 0 && j < 9 && (map.Sea[i][j - 1] != 3 || map.Sea[i][j + 1] != 3))) {
+                if (i > 0 && i < 9 && (map.Sea[i - 1][j] != 3 || map.Sea[i + 1][j] != 3)) { return 0; }
+                else if ((i == 0 && map.Sea[i + 1][j] != 3) || (i == 9 && map.Sea[i - 1][j] != 3)) { return 0; }
             }
-        }
+            else if (map.Sea[i][j] == 3 && (j == 0 && map.Sea[i][j + 1] != 3) || (j == 9 && map.Sea[i][j - 1] != 3)) {
+                if (i > 0 && i < 9 && (map.Sea[i - 1][j] != 3 || map.Sea[i + 1][j] != 3)) { return 0; }
+                else if ((i == 0 && map.Sea[i + 1][j] != 3) || (i == 9 && map.Sea[i - 1][j] != 3)) { return 0; }
+            }
+        } }
         return 1;
     }
 

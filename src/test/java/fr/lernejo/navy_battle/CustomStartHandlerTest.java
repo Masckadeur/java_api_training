@@ -125,4 +125,36 @@ class CustomStartHandlerTest {
         Assertions.assertEquals(400, response.statusCode());
         server.Stop();
     }
+
+    @Test
+    void StartHandlePostNoJson() throws IOException, InterruptedException {
+        var server = new StartServer(9876);
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:9876/api/game/start"))
+            .POST(HttpRequest.BodyPublishers.ofString(""))
+            .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        Assertions.assertEquals(400, response.statusCode());
+        server.Stop();
+    }
+
+    /*@Test
+    void StartHandlePostWrongJson() throws IOException, InterruptedException {
+        var server = new StartServer(9876);
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:9876/api/game/start"))
+            .POST(HttpRequest.BodyPublishers.ofString("{\"Id\":\"1\", \"UrL\":\"http://localhost:" + 9876 + "\", \"mescage\":\"\"}"))
+            .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        Assertions.assertEquals(400, response.statusCode());
+        server.Stop();
+    }*/
 }
