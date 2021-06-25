@@ -62,20 +62,16 @@ public class CustomStartHandler implements HttpHandler {
     private JsonStartHandlerProp ParseBody(HttpExchange exchange) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonStartHandlerProp requestJson = null;
-        String Body = "Bad request";
-
         String sb = ConvertInputStreamtoString(exchange.getRequestBody());
-        if (sb.isBlank())
-            return null;
+        if (sb.isBlank()) { return null; }
         else {
             try {
                 requestJson = mapper.readValue(sb, JsonStartHandlerProp.class);
             } catch (IllegalArgumentException e) {
-                exchange.sendResponseHeaders(400, Body.length());
+                exchange.sendResponseHeaders(400, "Bad request".length());
                 throw new IllegalArgumentException();
             }
         }
-
         return requestJson;
     }
 }
