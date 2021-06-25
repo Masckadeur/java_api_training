@@ -257,12 +257,106 @@ class CustomFireHandlerTest {
         var server = new StartServer(9876);
         HttpClient client = HttpClient.newHttpClient();
 
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=A0")).GET().build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        Assertions.assertEquals(404, response.statusCode());
+        Assertions.assertEquals("Wrong Param", response.body());
+
+        server.Stop();
+    }
+
+    @Test
+    void WrongParamWrongNumberUpper() throws IOException, InterruptedException {
+        var server = new StartServer(9876);
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=A28")).GET().build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        Assertions.assertEquals(404, response.statusCode());
+        Assertions.assertEquals("Wrong Param", response.body());
+
+        server.Stop();
+    }
+
+    @Test
+    void WrongParamWrongLetter() throws IOException, InterruptedException {
+        var server = new StartServer(9876);
+        HttpClient client = HttpClient.newHttpClient();
+
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=K8")).GET().build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         Assertions.assertEquals(404, response.statusCode());
         Assertions.assertEquals("Wrong Param", response.body());
+
+        server.Stop();
+    }
+
+    @Test
+    void WrongParamWrongLetterAndNumber() throws IOException, InterruptedException {
+        var server = new StartServer(9876);
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=K0")).GET().build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        Assertions.assertEquals(404, response.statusCode());
+        Assertions.assertEquals("Wrong Param", response.body());
+
+        server.Stop();
+    }
+
+    @Test
+    void ShipLeaftFalse() throws IOException, InterruptedException {
+        var server = new StartServer(9876);
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=A1")).GET().build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=A2")).GET().build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=A3")).GET().build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=A4")).GET().build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=A5")).GET().build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=G1")).GET().build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=G2")).GET().build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=G3")).GET().build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=I3")).GET().build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=J3")).GET().build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=F6")).GET().build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=G6")).GET().build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=H6")).GET().build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=D7")).GET().build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=D8")).GET().build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=D9")).GET().build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+        request = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?cell=D10")).GET().build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        Assertions.assertEquals("{\n\t\"consequence\": \"sunk\",\n\t\"shipLeft\": false\n}", response.body());
 
         server.Stop();
     }

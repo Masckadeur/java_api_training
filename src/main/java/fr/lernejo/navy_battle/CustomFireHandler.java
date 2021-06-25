@@ -5,7 +5,6 @@ import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.http.HttpClient;
 
 public class CustomFireHandler implements HttpHandler {
     final Cell map;
@@ -28,11 +27,7 @@ public class CustomFireHandler implements HttpHandler {
                 ShipLeaft(exchange);
             }
             //envoie ça cible à l'autre
-
-            //HttpClient client = HttpClient.newHttpClient();
-
-            //String param = exchange.getRequestURI().toString().substring(exchange.getRequestURI().toString().indexOf("?") + 1);
-            //exchange.sendResponseHeaders(202, "OK".length());
+            new FireRespond().Fire(exchange);
         }
 
     }
@@ -48,7 +43,6 @@ public class CustomFireHandler implements HttpHandler {
         }
         SendResponse(exchange, "{\n\t\"consequence\": \"sunk\",\n\t\"shipLeft\": false\n}", 200);
     }
-
 
     private int CheckBoat(JsonFireHandlerProp JsonProp) {
         if (map.Sea[JsonProp.row][JsonProp.col] == 0) {
@@ -74,8 +68,13 @@ public class CustomFireHandler implements HttpHandler {
 
     private JsonFireHandlerProp Parser(HttpExchange exchange) throws IOException {
         String param = exchange.getRequestURI().toString().substring(exchange.getRequestURI().toString().indexOf("?") + 1);
-        //param.substring(param.indexOf("=") + 1).charAt(1);
-        if (param.substring(param.indexOf("=") + 1).length() != 2 || param.substring(param.indexOf("=") + 1).charAt(0) > 'J' || param.substring(param.indexOf("=") + 1).charAt(1) - '0' > 10) {
+        final int length = param.substring(param.indexOf("=") + 1).length();
+        if (length < 2) {
+            SendResponse(exchange, "Wrong Param", 404);
+            return null;
+        }
+        final int number = param.substring(param.indexOf("=") + 1).charAt(1) - '0';
+        if (length > 3 || (length == 3 && !param.substring(param.indexOf("=") + 2).equals("10")) || param.substring(param.indexOf("=") + 1).charAt(0) > 'J' || number == 0 || number > 10) {
             SendResponse(exchange, "Wrong Param", 404);
             return null;
         }

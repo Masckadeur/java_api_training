@@ -72,14 +72,14 @@ public class SunkenBoat {
     }
 
     private int SunkenBoatAircraftCarrier(Cell map) {
-        int NumberOfBoat = 0;
+        int PartOfBoat = 0;
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 if (map.Sea[i][j] == 1)
-                    NumberOfBoat += 1;
+                    PartOfBoat += 1;
             }
         }
-        if (NumberOfBoat == 1)
+        if (PartOfBoat == 1)
             return 0;
         return 1;
     }

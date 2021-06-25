@@ -7,7 +7,11 @@ public class JsonFireHandlerProp {
 
     public JsonFireHandlerProp(String cell) {
         this.cell = cell;
-        this.row = cell.charAt(1) - '0' - 1;
         this.col = cell.charAt(0) - 'A';
+        if (cell.length() == 2)
+            this.row = cell.charAt(1) - '0' - 1;
+        else
+            this.row = 9;
+
     }
 }
