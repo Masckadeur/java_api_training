@@ -24,14 +24,14 @@ public class CustomStartHandler implements HttpHandler {
         else {
             JsonStartHandlerProp requestJson = ParseBody(exchange);
             if (requestJson == null || requestJson.message.equals("\"\"") || requestJson.id.equals("\"\"") || requestJson.url.equals("\"\"")) { SendResponse(exchange, "Bad Json", 400); }
-            else { SendResponse(exchange, "{\n\t\"id\":\"0\",\n\t\"url\":\"" + this.url + "\",\n\t\"message\":\"May the best code win\"\n", 202); }
+            else { SendResponse(exchange, "{\n\t\"id\":\"0\",\n\t\"url\":\"" + this.url + "\",\n\t\"message\":\"May the best code win\"\n}", 202); }
 
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestJson.url + "api/game/fire?ll=A1")).GET().build();
+            //HttpClient client = HttpClient.newHttpClient();
+            //HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestJson.url + "api/game/fire?ll=A1")).GET().build();
 
-            try {
-                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            } catch (InterruptedException e) { e.printStackTrace(); }
+            //try {
+            //    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            //} catch (InterruptedException e) { e.printStackTrace(); }
         }
     }
 

@@ -19,8 +19,8 @@ public class NewInstance {
 
         HttpResponse<String> response = client.send(requestPost, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.body());
-        HttpRequest requestApiFire = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?ll=A1")).GET().build();
-        response = client.send(requestApiFire, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
+        //HttpRequest requestApiFire = HttpRequest.newBuilder().uri(URI.create("http://localhost:9876/api/game/fire?ll=A1")).GET().build();
+        //response = client.send(requestApiFire, HttpResponse.BodyHandlers.ofString());
+        //System.out.println(response.body());
     }
 }
