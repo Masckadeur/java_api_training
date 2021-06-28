@@ -57,6 +57,7 @@ public class CustomFireHandler implements HttpHandler {
     }
 
     private void SendResponse(HttpExchange exchange, String s, int rcode) throws IOException {
+        exchange.getResponseHeaders().set("Content-Type", "application/json");
         exchange.sendResponseHeaders(rcode, s.length());
         try (OutputStream os = exchange.getResponseBody()) { // (1)
             os.write(s.getBytes());
