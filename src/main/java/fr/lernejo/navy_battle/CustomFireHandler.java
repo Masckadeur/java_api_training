@@ -24,7 +24,8 @@ public class CustomFireHandler implements HttpHandler {
             } else if (statusBoat == 2) { //Hit case
                 SendResponse(exchange, "{\n\t\"consequence\": \"hit\",\n\t\"shipLeft\": true\n}", 200);
             } else { ShipLeaft(exchange); } //sunk case
-            new FireRespond().Fire(exchange); //envoie ça cible à l'autre
+            try { new FireRespond().Fire(exchange); //envoie ça cible à l'autre
+            } catch (InterruptedException e) { e.printStackTrace(); }
         }
     }
 
@@ -63,7 +64,7 @@ public class CustomFireHandler implements HttpHandler {
     }
 
     private JsonFireHandlerProp Parser(HttpExchange exchange) throws IOException {
-        String param = exchange.getRequestURI().toString().substring(exchange.getRequestURI().toString().indexOf("?") + 1);
+        String param = exchange.getRequestURI().getQuery();
         final int length = param.substring(param.indexOf("=") + 1).length();
         if (length < 2) {
             SendResponse(exchange, "Wrong Param", 404);

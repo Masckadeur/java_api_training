@@ -11,6 +11,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.UUID;
 
 public class CustomStartHandler implements HttpHandler {
 
@@ -24,14 +25,10 @@ public class CustomStartHandler implements HttpHandler {
         else {
             JsonStartHandlerProp requestJson = ParseBody(exchange);
             if (requestJson == null || requestJson.message.equals("\"\"") || requestJson.id.equals("\"\"") || requestJson.url.equals("\"\"")) { SendResponse(exchange, "Bad Json", 400); }
-            else { SendResponse(exchange, "{\n\t\"id\":\"0\",\n\t\"url\":\"" + this.url + "\",\n\t\"message\":\"May the best code win\"\n}", 202); }
-
-            //HttpClient client = HttpClient.newHttpClient();
-            //HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestJson.url + "api/game/fire?ll=A1")).GET().build();
-
-            //try {
-            //    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            //} catch (InterruptedException e) { e.printStackTrace(); }
+            else { SendResponse(exchange, "{\n\t\"id\":\"" + UUID.randomUUID() + "\",\n\t\"url\":\"" + this.url + "\",\n\t\"message\":\"May the best code win\"\n}", 202); }
+            var Game = new StartGame(requestJson, requestJson);
+            try { Game.LaunchGame();
+            } catch (InterruptedException e) { e.printStackTrace(); }
         }
     }
 
