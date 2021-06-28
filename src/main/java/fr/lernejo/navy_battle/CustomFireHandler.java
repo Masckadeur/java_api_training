@@ -24,8 +24,8 @@ public class CustomFireHandler implements HttpHandler {
             } else if (statusBoat == 2) { //Hit case
                 SendResponse(exchange, "{\n\t\"consequence\": \"hit\",\n\t\"shipLeft\": true\n}", 200);
             } else { ShipLeaft(exchange); } //sunk case
-            try { new FireRespond().Fire(exchange); //envoie ça cible à l'autre
-            } catch (InterruptedException e) { e.printStackTrace(); }
+            //try { new FireRespond().Fire(exchange); //envoie ça cible à l'autre
+            //} catch (InterruptedException e) { e.printStackTrace(); }
         }
     }
 
